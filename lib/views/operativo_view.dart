@@ -3,8 +3,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/zona_model.dart';
 import '../widgets/tarjeta_zona.dart';
 import '../widgets/form_nutricion.dart';
-import '../widgets/form_sanidad.dart'; // <--- IMPORTANTE
-import '../widgets/form_cosecha.dart'; // <--- IMPORTANTE
+import '../widgets/form_sanidad.dart';
+import '../widgets/form_cosecha.dart';
+import '../widgets/form_aplicacion.dart'; // <--- NUEVO IMPORT
 
 class VistaZonificacionReal extends StatelessWidget {
   const VistaZonificacionReal({super.key});
@@ -51,7 +52,6 @@ class VistaZonificacionReal extends StatelessWidget {
     );
   }
 
-  // --- PANEL DE CONTROL TÁCTICO ---
   void _mostrarPanelControl(BuildContext context, ZonaCultivo zona) {
     showModalBottomSheet(
       context: context,
@@ -71,12 +71,30 @@ class VistaZonificacionReal extends StatelessWidget {
             ),
             const Divider(height: 30, color: Colors.white10),
             
-            // 1. BOTÓN NUTRICIÓN
+            // 1. REGISTRAR APLICACIÓN (NUEVO)
+            _botonAccion(
+              context, 
+              "REGISTRAR APLICACIÓN (RIEGO/QUÍMICOS)", 
+              Icons.fact_check, 
+              Colors.blueAccent,
+              onTap: () {
+                Navigator.pop(context); 
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: const Color(0xFF1A1A1A),
+                  builder: (context) => FormAplicacion(zonaId: zona.id),
+                );
+              }
+            ),
+            const SizedBox(height: 10),
+
+            // 2. REGISTRAR NUTRICIÓN
             _botonAccion(
               context, 
               "REGISTRAR NUTRICIÓN (pH/CE)", 
               Icons.water_drop, 
-              Colors.blueAccent,
+              Colors.cyanAccent,
               onTap: () {
                 Navigator.pop(context); 
                 showModalBottomSheet(
@@ -89,7 +107,7 @@ class VistaZonificacionReal extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            // 2. BOTÓN SANIDAD (¡Ya configurado!)
+            // 3. REPORTE DE SANIDAD
             _botonAccion(
               context, 
               "REPORTE DE SANIDAD (PLAGAS)", 
@@ -107,7 +125,7 @@ class VistaZonificacionReal extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            // 3. BOTÓN COSECHA (¡Ya configurado!)
+            // 4. FINALIZAR COSECHA
             _botonAccion(
               context, 
               "FINALIZAR COSECHA", 
@@ -131,7 +149,6 @@ class VistaZonificacionReal extends StatelessWidget {
     );
   }
 
-  // Widget de botón reutilizable
   Widget _botonAccion(BuildContext context, String titulo, IconData icono, Color color, {required VoidCallback onTap}) {
     return SizedBox(
       width: double.infinity,
