@@ -3,6 +3,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/zona_model.dart';
 import '../widgets/tarjeta_zona.dart';
 import '../widgets/form_nutricion.dart';
+import '../widgets/form_sanidad.dart'; // <--- IMPORTANTE
+import '../widgets/form_cosecha.dart'; // <--- IMPORTANTE
 
 class VistaZonificacionReal extends StatelessWidget {
   const VistaZonificacionReal({super.key});
@@ -53,7 +55,7 @@ class VistaZonificacionReal extends StatelessWidget {
   void _mostrarPanelControl(BuildContext context, ZonaCultivo zona) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Permite que el contenido se ajuste si es necesario
+      isScrollControlled: true, 
       backgroundColor: const Color(0xFF1A1A1A),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25))
@@ -69,14 +71,14 @@ class VistaZonificacionReal extends StatelessWidget {
             ),
             const Divider(height: 30, color: Colors.white10),
             
-            // 1. Botón Nutrición (Configurado para abrir FormNutricion)
+            // 1. BOTÓN NUTRICIÓN
             _botonAccion(
               context, 
               "REGISTRAR NUTRICIÓN (pH/CE)", 
               Icons.water_drop, 
               Colors.blueAccent,
               onTap: () {
-                Navigator.pop(context); // Cierra el menú táctico
+                Navigator.pop(context); 
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -87,23 +89,39 @@ class VistaZonificacionReal extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            // 2. Botón Sanidad (Pendiente de formulario)
+            // 2. BOTÓN SANIDAD (¡Ya configurado!)
             _botonAccion(
               context, 
               "REPORTE DE SANIDAD (PLAGAS)", 
               Icons.bug_report, 
               Colors.orangeAccent,
-              onTap: () => Navigator.pop(context),
+              onTap: () {
+                Navigator.pop(context); 
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: const Color(0xFF1A1A1A),
+                  builder: (context) => FormSanidad(zonaId: zona.id),
+                );
+              },
             ),
             const SizedBox(height: 10),
 
-            // 3. Botón Cosecha (Pendiente de formulario)
+            // 3. BOTÓN COSECHA (¡Ya configurado!)
             _botonAccion(
               context, 
               "FINALIZAR COSECHA", 
               Icons.shopping_basket, 
               Colors.redAccent,
-              onTap: () => Navigator.pop(context),
+              onTap: () {
+                Navigator.pop(context); 
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: const Color(0xFF1A1A1A),
+                  builder: (context) => FormCosecha(zonaId: zona.id),
+                );
+              },
             ),
             
             const SizedBox(height: 30),
